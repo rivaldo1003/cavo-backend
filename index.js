@@ -24,12 +24,6 @@ app.use(express.json());
 app.use("/api/products", productsRouter);
 app.use("/api/orders", ordersRouter);
 
-// Opsi tambahan: Jika ingin memetakan /api/essential-images langsung ke rute di dalam productsRouter
-app.get("/api/essential-images", async (req, res) => {
-  const { rows } = await require("./db").query("SELECT id, image_url FROM products WHERE image_url IS NOT NULL");
-  res.json(rows);
-});
-
 // Health check
 app.get("/api/health", (req, res) => {
   res.json({ status: "OK", message: "CAVO Backend is running" });
