@@ -24,6 +24,10 @@ app.use(express.json());
 app.use("/api/products", productsRouter);
 app.use("/api/orders", ordersRouter);
 
+// Tambahkan ini jika ingin /api/essential-images bisa diakses langsung tanpa prefix /products
+app.get("/api/essential-images", productsRouter);
+// Atau lebih baik panggil dari Frontend ke: /api/products/essential-images
+
 // Health check
 app.get("/api/health", (req, res) => {
   res.json({ status: "OK", message: "CAVO Backend is running" });
