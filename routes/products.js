@@ -22,18 +22,18 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// GET essential images (untuk galeri atau landing page)
-router.get("/essential-images", async (req, res) => {
-  try {
-    const result = await pool.query(
-      "SELECT id, image_url FROM products WHERE image_url IS NOT NULL",
-    );
-    res.json(result.rows);
-  } catch (err) {
-    console.error("Error fetching essential images:", err);
-    res.status(500).json({ error: "Failed to fetch images." });
-  }
-});
+// // GET essential images (untuk galeri atau landing page)
+// router.get("/essential-images", async (req, res) => {
+//   try {
+//     const result = await pool.query(
+//       "SELECT id, image_url FROM products WHERE image_url IS NOT NULL",
+//     );
+//     res.json(result.rows);
+//   } catch (err) {
+//     console.error("Error fetching essential images:", err);
+//     res.status(500).json({ error: "Failed to fetch images." });
+//   }
+// });
 
 // GET semua produk
 router.get("/", async (req, res) => {
