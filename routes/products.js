@@ -28,7 +28,8 @@ router.get("/", async (req, res) => {
     const result = await pool.query("SELECT * FROM products ORDER BY id");
     res.json(result.rows);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error("Error fetching products:", err); // Log the detailed error on the server
+    res.status(500).json({ error: "Failed to fetch products." }); // Send a generic message to the client
   }
 });
 
@@ -79,19 +80,6 @@ router.post("/:id/upload", upload.single("image"), async (req, res) => {
     res.json({ success: true, imageUrl });
   } catch (err) {
     res.status(500).json({ error: err.message });
-  }
-});
-
-// GET essential images
-router.get("/essential-images", async (req, res) => {
-  try {
-    const result = await pool.query(
-      "SELECT * FROM essential_images ORDER BY id",
-    );
-    res.json(result.rows);
-  } catch (err) {
-    // Fallback: return empty array
-    res.json([]);
   }
 });
 
