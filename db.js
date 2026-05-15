@@ -1,4 +1,3 @@
-cat > db.js << "EOF";
 const { Pool } = require("pg");
 
 const pool = new Pool({
@@ -15,4 +14,3 @@ pool.connect((err) => {
 });
 
 module.exports = pool;
-EOF;
