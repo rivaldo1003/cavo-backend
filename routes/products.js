@@ -5,13 +5,10 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 
-// Konfigurasi multer untuk upload file - PAKAI ABSOLUTE PATH
+// Konfigurasi multer untuk upload file
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    // Absolute path ke frontend public/uploads
-    const uploadDir =
-      "/Users/tifaniadwisafitri/development/Backend/cavo-fashion/public/uploads";
-
+    const uploadDir = path.join(__dirname, "../../frontend/public/uploads");
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
@@ -93,6 +90,7 @@ router.get("/essential-images", async (req, res) => {
     );
     res.json(result.rows);
   } catch (err) {
+    // Fallback: return empty array
     res.json([]);
   }
 });

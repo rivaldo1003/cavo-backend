@@ -16,6 +16,7 @@ app.use(express.json());
 // Routes
 app.use("/api/products", productsRouter);
 app.use("/api/orders", ordersRouter); // ✅ HANYA SEKALI
+app.use("/api/essential-images", productsRouter); // Ini akan membuat semua route di productsRouter bisa diakses via /api/essential-images juga, yang mungkin bukan yang Anda mau.
 
 // Health check
 app.get("/api/health", (req, res) => {
