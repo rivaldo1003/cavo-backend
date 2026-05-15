@@ -96,4 +96,23 @@ router.post("/:id/upload", upload.single("image"), async (req, res) => {
   }
 });
 
+// GET essential images
+router.get("/essential-images", async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT * FROM essential_images ORDER BY id",
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error("Error essential-images:", err.message);
+    // Fallback manual
+    res.json([
+      { id: 1, gambar: "/models/essential-1.png" },
+      { id: 2, gambar: "/models/essential-2.png" },
+      { id: 3, gambar: "/models/essential-3.png" },
+      { id: 4, gambar: "/models/essential-4.png" },
+    ]);
+  }
+});
+
 module.exports = router;
