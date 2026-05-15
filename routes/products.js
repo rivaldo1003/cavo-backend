@@ -96,23 +96,18 @@ router.post("/:id/upload", upload.single("image"), async (req, res) => {
   }
 });
 
-// GET essential images
+// routes/products.js - Hapus atau ganti endpoint /essential-images yang lama dengan kode ini
 router.get("/essential-images", async (req, res) => {
   try {
+    // Query khusus untuk tabel essential_images
     const result = await pool.query(
       "SELECT * FROM essential_images ORDER BY id",
     );
     res.json(result.rows);
   } catch (err) {
-    console.error("Error essential-images:", err.message);
-    // Fallback manual
-    res.json([
-      { id: 1, gambar: "/models/essential-1.png" },
-      { id: 2, gambar: "/models/essential-2.png" },
-      { id: 3, gambar: "/models/essential-3.png" },
-      { id: 4, gambar: "/models/essential-4.png" },
-    ]);
+    console.error("Error fetching essential images:", err.message);
+    // Kirim array kosong agar frontend tidak error, gambar akan pakai fallback
+    res.json([]);
   }
 });
-
 module.exports = router;
