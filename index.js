@@ -3,6 +3,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const productsRouter = require("./routes/products");
 const ordersRouter = require("./routes/orders");
+const pool = require("./db");
 
 dotenv.config();
 
@@ -24,9 +25,18 @@ app.use(express.json());
 app.use("/api/products", productsRouter);
 app.use("/api/orders", ordersRouter);
 
-// Tambahkan ini jika ingin /api/essential-images bisa diakses langsung tanpa prefix /products
-app.get("/api/essential-images", productsRouter);
-// Atau lebih baik panggil dari Frontend ke: /api/products/essential-images
+// Rute khusus untuk mengambil data dari tabel essential_images
+app.get("/api/essential-images", async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT * FROM essential_images ORDER BY id",
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error("Error fetching essential images:", err);
+    res.status(500).json({ error: "Failed to fetch essential images" });
+  }
+});
 
 // Health check
 app.get("/api/health", (req, res) => {
