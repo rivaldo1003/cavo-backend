@@ -36,18 +36,31 @@ router.get("/", async (req, res) => {
 // UPDATE stok produk
 router.put("/:id/stock", async (req, res) => {
   const { id } = req.params;
-  const { stock_s, stock_m, stock_l, stock_xl } = req.body;
-  const totalStok =
-    (stock_s || 0) + (stock_m || 0) + (stock_l || 0) + (stock_xl || 0);
+
+  // Validasi jika body tidak ada
+  if (!req.body) {
+    return res
+      .status(400)
+      .json({ error: "Data stok tidak ditemukan dalam permintaan" });
+  }
+
+  // Pastikan nilai adalah angka untuk menghindari penggabungan string (concatenation)
+  const s = parseInt(req.body.stock_s) || 0;
+  const m = parseInt(req.body.stock_m) || 0;
+  const l = parseInt(req.body.stock_l) || 0;
+  const xl = parseInt(req.body.stock_xl) || 0;
+
+  const totalStok = s + m + l + xl;
 
   try {
     await pool.query(
       "UPDATE products SET stock_s = $1, stock_m = $2, stock_l = $3, stock_xl = $4, total_stok = $5 WHERE id = $6",
-      [stock_s, stock_m, stock_l, stock_xl, totalStok, id],
+      [s, m, l, xl, totalStok, id],
     );
     res.json({ success: true });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error("Error updating stock:", err);
+    res.status(500).json({ error: "Gagal memperbarui stok produk." });
   }
 });
 
